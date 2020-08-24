@@ -1,0 +1,183 @@
+body{
+  width: auto;
+  height: auto;
+}
+.parallax {
+    background-image: url('/static/images/parallax/hotel2.jpg');
+    min-height: 600px; 
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+  }  
+.parallax2{
+    background-image: url('/static/images/parallax/hotel3.jpg');
+    min-height: 800px; 
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+}
+.parallax3{
+  background-image: url('/static/images/parallax/hotel.jpg');
+  min-height: 800px; 
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+}
+.parallax4{
+  background-image: url('/static/images/parallax/hotel4.jpg');
+  min-height: 800px; 
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+}
+.parallax5{
+  background-image: url('/static/images/parallax/hotel5.jpg');
+  min-height: 600px; 
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+}
+
+  .intro{
+      top: 320px;
+      left: 8%;
+      border-radius: 10px;
+      background-color: transparent;
+  }
+  .welcome {
+    background: 50% 100% / 50% 50% no-repeat
+                radial-gradient(ellipse at bottom, #fff, transparent, transparent);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: 4vw;
+    font-family: "Source Sans Pro", sans-serif;
+    animation: reveal 3000ms ease-in-out forwards 200ms,
+               glow 2500ms linear infinite 2000ms ;
+  
+  }
+  @keyframes reveal {
+    80%{
+      letter-spacing: 8px;
+    }
+    100% {
+      background-size: 300% 300%;
+    }
+  }
+  @keyframes glow {
+    40% {
+      text-shadow: 0 0 8px #fff;
+    }
+  }
+  
+  @media only screen and (max-width: 600px) {
+    .intro{
+        top: 220px;
+        left: 20%;
+        border-radius: 10px;
+        background-color: transparent;
+    }
+    .welcome{
+        background: 50% 100% / 50% 50% no-repeat
+                radial-gradient(ellipse at bottom, #fff, transparent, transparent);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-size: 10vw;
+        font-family: "Source Sans Pro", sans-serif;
+        animation: reveal 3000ms ease-in-out forwards 200ms,
+                glow 2500ms linear infinite 2000ms ;
+  
+    }
+    .parallax {
+    background-image: url('/static/images/parallax/mobile_hotel2.jpg');
+    min-height: 600px; 
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    }  
+    .parallax2{
+        background-image: url('/static/images/parallax/mobile_hotel3.jpg');
+        min-height: 800px; 
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    .parallax3{
+      background-image: url('/static/images/parallax/mobile_hotel.jpg');
+      min-height: 800px; 
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+  }
+  .navbar-nav a{
+    font-family: 'Gill Sans', 'Gill Sans MT';
+    font-size: x-large;
+    margin: 25px;
+    font-stretch: expanded;
+    text-align: center;
+  }
+  .navbar-nav a:hover{
+    color: white !important;
+    border-radius: 5px; 
+  }
+  .sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+  }
+
+  .room_heading{
+    text-align: center;
+    padding: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: xx-large;
+    font-weight: 400;
+    color: #002366;
+  }
+  .room_type_heading{
+    padding: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    color: #002366;
+  }
+  .card-img-top:hover{
+    transform: scale(1.2);
+  }
+  .about-text{
+    text-align: justify;
+    font-family: sans-serif;
+    font-style: oblique;
+    font-size: large !important;
+  }
+  .card{
+      z-index: -1;
+  }
+  .obq{
+    font-style: oblique;
+  }
+  
+  .progress-container {
+    width: 100%;
+    height: 8px;
+    background: #ccc;
+  }
+  .progress-bar {
+    height: 8px;
+    background: #002366;
+    width: 0%;
+  }

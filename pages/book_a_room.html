@@ -1,0 +1,183 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block content%}
+{%if room_select == False%}
+<form action="/dashboard/acceptBooking" method="POST">
+    {%csrf_token%}
+    <h4 class="room_type_heading obq">Select Room Type</h4>
+    <div class="form-group">
+        <select name="room" class="form-control">
+            <option value="Select">Select</option>
+            {%for item in obj%}
+            <option value="{{item.room_name}}">{{item.room_name}}</option>
+            {%endfor%}
+        </select><br>
+        <input type="submit" class="btn btn-primary" value="Proceed for Booking">
+    </div>
+</form>
+{%else%}
+<form action="/dashboard/confirmBooking" onsubmit="return checkme()" method="POST">
+    {%csrf_token%}
+    <h4 class="room_type_heading obq">Booking Details</h4>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" name="book_name" class="form-control" id="name" value="{{request.user.first_name}}" required>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="form-group">
+                    <label for="rtype">Room Type</label>
+                    <input type="text" name="book_room_type" value="{{obj.room_name}}" class="form-control" id="rtype" readonly>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <div class="form-group">
+                    <label for="cid">Check-In Date</label>
+                    <input type="date" onchange="onchangedate('{{obj.room_price}}')" name="check_in_date" class="form-control set-today-from" id="cid" required>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="form-group">
+                    <label for="cit">Check-In Time</label>
+                    <input type="time" name="check_in_time" class="form-control" id="cit" required>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <div class="form-group">
+                    <label for="cod">Check-Out Date</label>
+                    <input type="date" onchange="onchangedate('{{obj.room_price}}')" name="check_out_date" class="form-control set-today-to" id="cod" required>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="form-group">
+                    <label for="cot">Check-Out Time</label>
+                    <input type="time" name="check_out_time" class="form-control" id="cot" required>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <div class="form-group">
+                    <label for="days_stayed">No. of Days</label>
+                    <input type="text" name="days" class="form-control" value="1" id="days_stayed" readonly>
+                    <small>Amount Calculated for a single full day irrespective of check-in and check-out</small>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="form-group">
+                    <label for="nor">No. of Rooms</label>
+                    <select name="rooms_count" onchange="onchangedate('{{obj.room_price}}')" class="form-control" id="nor">
+                        <option>Select</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <div class="form-group">
+                    <label for="days_count">Amount To Pay</label>
+                    <input type="text" name="amount" class="form-control" value="{{obj.room_price}}" id="days_count" readonly>
+                    <small id="information">Default it will be shown for a single day</small>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="form-group">
+                    <label for="pay">Make Payment</label><br>
+                    <a id="pay" class="btn btn-primary" data-toggle="modal" data-target="#code">Click to Pay</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <div class="form-group">
+                    <label for="message">Message to Hotel Desk</label>
+                    <textarea name="message_desk" class="form-control"></textarea>
+                    <small>You can specify some instructions to our desk (if needed). Max. length: 500 chars</small>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="form-group">
+                    <label for="ref_no">Payment Reference ID</label>
+                    <input type="text" class="form-control" name="payment_id" id="ref_no" required>
+                </div>
+            </div>
+        </div>
+        <h4 class="room_type_heading obq">Note</h4>
+        <ol>
+            <li>Payment is not refunded in case of room cancelled before 24 hours of Check-In Time</li>
+            <li>Cleaning staff will be cleaning your room once in a day and person should be in the room</li>
+            <li>Hotel Management is not responsible for theft / damage of your products</li>
+        </ol>
+        <input type="submit" class="btn btn-primary" value="Book Room">
+    </div>
+    </form>
+    <div class="modal fade" id="code" tabindex="-1" role="dialog" aria-labelledby="loginModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="loginModalLongTitle">Nova Luxury Room Payment</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <p style="text-align:center;">
+                    <img src="{% static 'images/gpay_pic.png' %}" alt=""><br>
+                    <h4 class="room_type_heading obq">Demo Code - Not Real</h4>
+                </p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+        window.onload= function() {
+            var x = new Date().toISOString().substr(0,10);
+            document.querySelector('.set-today-from').value=(x);
+            var x = new Date().toISOString().substr(0,10);
+            document.querySelector('.set-today-to').value=(x);
+        }
+        function onchangedate(cost)
+        {
+            var from_date = new Date(document.getElementById("cid").value);
+            var to_date = new Date(document.getElementById("cod").value);            
+            var Difference_In_Time = to_date.getTime() - from_date.getTime(); 
+            var Difference_In_Days = (Difference_In_Time / (1000 * 3600 * 24)) + 1; 
+            if (Difference_In_Days<=0)
+            {
+                document.getElementById("days_stayed").value = 'nan';        
+                document.getElementById("days_count").value = 'nan';
+            }
+            else{
+                document.getElementById("days_stayed").value = (Difference_In_Days);
+                var val = document.getElementById("nor").value;
+                document.getElementById("days_count").value = Difference_In_Days*cost*val;
+                document.getElementById("information").innerHTML = 'We charge a cost of '+cost+' per day and you choose '+val+' rooms'+' for '+Difference_In_Days+' days';
+            }
+        }
+        function checkme(){
+            if (document.getElementById("days_count").value=="nan" || document.getElementById("days_stayed").value=="nan")
+            {
+                alert('Incorrect Date Provided. Recheck and Book')
+                return false;
+            }
+            else
+            return true;
+        } 
+      </script>
+
+{%endif%}
+{%endblock%}

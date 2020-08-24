@@ -1,0 +1,79 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block content%}
+<h4 class="room_type_heading obq">Your Bookings</h4>
+<table class="table table-striped table-bordered table-hover">
+    <caption>Upcoming Stay</caption>
+    <tr>
+        <th>Booking ID</th>
+        <th>Date of Booking</th>
+        <th>Check In Date</th>
+        <th>Check Out Date</th>
+        <th>No of Rooms</th>
+        <th>No of Days</th>
+        <th>Amount Paid</th>
+        <th>Cancel Booking</th>
+    </tr>
+    {%for item in li_up%}
+    <tr>
+        <td>BK{{item.id}}</td>
+        <td>{{item.date_booked}}</td>
+        <td>{{item.check_in_date}}</td>
+        <td>{{item.check_out_date}}</td>
+        <td>{{item.no_of_rooms}}</td>
+        <td>{{item.total_days}}</td>
+        <td>{{item.cost}}</td>
+        <td><a href="/dashboard/cancelBooking/{{item.id}}" onclick="alert('Are you sure to Cancel')" class="btn btn-danger">Cancel Booking</a></td>
+    </tr>
+    {%endfor%}
+</table>
+<table class="table table-striped table-bordered table-hover">
+    <caption>Completed Stay</caption>
+    <tr>
+        <th>Booking ID</th>
+        <th>Date of Booking</th>
+        <th>Check In Date</th>
+        <th>Check Out Date</th>
+        <th>No of Rooms</th>
+        <th>No of Days</th>
+        <th>Amount Paid</th>
+    </tr>
+    {%for item in li_past%}
+    <tr>
+        <td>BK{{item.id}}</td>
+        <td>{{item.date_booked}}</td>
+        <td>{{item.check_in_date}}</td>
+        <td>{{item.check_out_date}}</td>
+        <td>{{item.no_of_rooms}}</td>
+        <td>{{item.total_days}}</td>
+        <td>{{item.cost}}</td>
+    </tr>
+    {%endfor%}
+</table>
+<table class="table table-striped table-bordered table-hover">
+    <caption>Cancelled Bookings</caption>
+    <tr>
+        <th>Booking ID</th>
+        <th>Date of Booking</th>
+        <th>Check In Date</th>
+        <th>Check Out Date</th>
+        <th>No of Rooms</th>
+        <th>No of Days</th>
+        <th>Amount Paid</th>
+        <th>Date Cancelled</th>
+    </tr>
+    {%for item in canc%}
+    <tr>
+        <td>BK{{item.id}}</td>
+        <td>{{item.date_booked}}</td>
+        <td>{{item.check_in_date}}</td>
+        <td>{{item.check_out_date}}</td>
+        <td>{{item.no_of_rooms}}</td>
+        <td>{{item.total_days}}</td>
+        <td>{{item.cost}}</td>
+        <td>{{item.cancelled_date}}</td>
+    </tr>
+    {%endfor%}
+</table>
+
+{%endblock%}

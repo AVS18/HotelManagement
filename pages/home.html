@@ -1,0 +1,368 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'sparrow.css' %}">
+</head>
+<body>
+  <section id="home">
+    <div class="parallax">
+      {% if messages %}
+        {% for message in messages %}
+        <div {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+          <div class="alert alert-success" role="alert">
+            {{message}} 
+          </div>
+        </div>
+        {% endfor %}
+      {%endif%}
+      <div class="row">
+          <div class="col-sm-4  intro">
+            <div class="welcome">
+              Welcome to Nova Luxury Hotel
+            </div>
+          </div>        
+      </div>  
+    </div>
+    <div>
+      <nav class="navbar navbar-expand-lg bg-light navbar-light" id="sparrow">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sparrowNav" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="/"><img id="Img" src="{% static 'images/logo.png' %}" alt="logo" width="250px" height="150px"></a>
+      <div class="collapse navbar-collapse" id="sparrowNav">
+          <ul class="navbar-nav mr-auto">
+              <li class="nav-item">
+                  <a class="btn-outline-primary nav-link" href="#home">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="btn-outline-primary nav-link" href="#about">About Us</a>
+            </li>
+              <li class="nav-item">
+                <a class="btn-outline-success nav-link" href="#rooms">Rooms</a>
+              </li>
+              <li class="nav-item">
+                  <a class="btn-outline-info nav-link" href="#reviews">Reviews</a>
+              </li>
+              <li class="nav-item">
+                <a class="btn-outline-info nav-link" href="#contactUs">Contact Us</a>
+              </li>
+          </ul>
+          <ul class="navbar-nav">
+              {%if request.user.is_authenticated == False%}
+              <li class="nav-item">
+                  <a class="btn-outline-primary nav-link" type="button" data-toggle="modal" data-target="#Login">Login</a>
+              </li>
+              <li class="nav-item">
+                  <a class="btn-outline-secondary nav-link" type="button" data-toggle="modal" data-target="#Register">Register</a>
+              </li>
+              {%else%}
+              <li class="nav-item dropdown">
+                <a class="btn-outline-warning nav-link dropdown-toggle" href="#" data-toggle="dropdown">More items</a>
+                 <ul class="dropdown-menu">
+                  <li class="nav-item">
+                    <a class="btn-outline-primary nav-link" href="/dashboard">Dashboard</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="btn-outline-secondary nav-link" href="/logout">Logout</a>
+                  </li>
+                 </ul>
+               </li>
+              {%endif%}
+          </ul>
+      </div>
+      </nav>
+    </div>
+    <div class="progress-container fixed-top">
+      <div class="progress-bar" id="myBar"></div>
+    </div>
+    <div class="parallax2"></div>
+  </section>
+  <section id="about" class="container">
+    <p style="text-align: center;"><img src="{% static 'images/logo.png' %}" alt="logo" width="250px" height="150px"></p>
+    <h4 class="room_type_heading">About Us</h4>
+    <p class="about-text">Nova Luxury Hotel is established on 27th March, 1995. We are currently the top leaders in the hotel industry, providing the best world-class experience to our customers without delay. We are running this business from the past 25 years providing remarkable service to all of our customers.
+      We are now an enterprise of Select Group with interests in core Hospitality, Travel and Retail, amongst others, Select Hotels owns and operates two chic urban resorts in the country offering superlative experiences and one boutique hotel located in a quaint neighbourhood of Kochi offering superior experiences for corporate </p>
+  </section>
+  <div class="parallax4"></div>
+  <section id="rooms">
+      <h2 class="room_heading obq">Rooms Offered</h2>    
+      <div class="container">
+        <h4 class="room_type_heading obq">Economy</h4>
+        <div class="card-deck">
+          {%for item in eco%}
+          <div class="card border-primary">
+            <img class="card-img-top" src="{{item.room_img.url}}" width="200px" height="200px" alt="Card image cap">
+            <div class="card-body">
+              <h5 class="card-title">{{item.room_name}}</h5>
+              <p class="card-text">{{item.room_desc}}</p>
+            </div>
+            <div class="card-body">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">Price &emsp;: {{item.room_price}}</li>
+                <li class="list-group-item">Max. Oppupancy &nbsp;: {{item.room_occ}}</li>
+                <li class="list-group-item">No of Vacant Rooms: {{item.no_of_rooms_avail}}</li>
+              </ul>
+            </div>
+          </div>
+          {%endfor%}
+        </div>
+        <h4 class="room_type_heading obq">Premium</h4>
+        <div class="card-deck">
+          {%for item in pre%}
+          <div class="card border-primary">
+            <img class="card-img-top" src="{{item.room_img.url}}" width="200px" height="200px" alt="Card image cap">
+            <div class="card-body">
+              <h5 class="card-title">{{item.room_name}}</h5>
+              <p class="card-text">{{item.room_desc}}</p>
+            </div>
+            <div class="card-body">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">Price &emsp;: {{item.room_price}}</li>
+                <li class="list-group-item">Max. Oppupancy &nbsp;: {{item.room_occ}}</li>
+                <li class="list-group-item">No of Vacant Rooms: {{item.no_of_rooms_avail}}</li>
+              </ul>
+            </div>
+          </div>
+          {%endfor%}
+        </div>
+      </div>
+      <br><br>
+  </section>
+  <div class="parallax3"></div>
+  <br>
+  <section id="reviews">
+      <div class="container">
+        <br><h4 class="room_type_heading obq">Our Recent Customer Reviews</h4><br>
+        <div class="card-deck">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Excellent Service</h5>
+              <div class="row">
+                <div class="col">
+                  <img src="{% static 'images/user1.png' %}" alt="">
+                  <div class="card-body">
+                    <p class="card-text">Rating: &#9733;&#9733;&#9733;&#9733;&#9733;<br>Date Stayed: 26th June 2020
+                    </p>
+                  </div>
+                </div>
+                <div class="col">
+                  <ul>
+                    <li class="list-group-item">Resonable Price</li>
+                    <li class="list-group-item">10 minute walk from old town</li>
+                    <li class="list-group-item">Best Breakfast</li>
+                    <li class="list-group-item">Definitely stay again</li>
+                  </ul>
+                </div>
+              </div>  
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Excellent Service</h5>
+              <div class="row">
+                <div class="col">
+                  <img src="{% static 'images/user1.png' %}" alt="">
+                  <div class="card-body">
+                    <p class="card-text">Rating: &#9733;&#9733;&#9733;&#9733;<br>Date Stayed: 21st August 2020
+                    </p>
+                  </div>
+                </div>
+                <div class="col">
+                  <ul>
+                    <li class="list-group-item">Resonable Price</li>
+                    <li class="list-group-item">Best Cleaning Staff</li>
+                    <li class="list-group-item">Pleasent Rom Atmosphere</li>
+                    <li class="list-group-item">Definitely stay again</li>
+                  </ul>
+                </div>
+              </div>  
+            </div>
+          </div>
+        </div>
+      </div><br>
+  </section>
+  <div class="parallax5"></div>
+  <section id="contactUs">
+    <br><h4 class="room_type_heading obq">Contact Us</h4><br>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d125750.45326523921!2d76.2308034!3d9.9587608!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b0872fe2d56e867%3A0xd1920a60a7435a58!2sLe%20Meridien%20Kochi!5e0!3m2!1sen!2sin!4v1598003840316!5m2!1sen!2sin" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+        </div>
+        <div class="col-sm">
+          <form action="/contact" method="POST" enctype="multipart/form-data">
+            {%csrf_token%}
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" name="cust_name" id="name" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="email">E-mail</label>
+              <input type="email" name="cust_email" id="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="mobile">Mobile</label>
+              <input type="text" name="cust_mobile" id="mobile" class="form-control" required>
+              <small>Enter your 10 digit mobile number</small>
+            </div>
+            <div class="form-group">
+              <label for="issue">Message</label>
+              <textarea name="cust_message" id="issue" class="form-control" required></textarea>
+            </div>
+            <input type="submit" value="Send Message" class="btn btn-primary">
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+<!--Login and Registration-->
+
+<div class="modal fade" id="Login" tabindex="-1" role="dialog" aria-labelledby="loginModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginModalLongTitle">Nova Luxury Login</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p style="text-align: center;"><img src="{% static 'images/logo.png' %}" alt="logo" width="250px" height="150px"></p>
+        <form action="/login" method="POST" enctype="multipart/form-data">
+          {%csrf_token%}
+          <div class="form-group">
+            <label for="name">Username</label>
+            <input type="text" name="username" id="name" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="pwd">Password</label>
+            <input type="password" name="password" id="pwd" class="form-control" required>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Login</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+<!--Registration-->
+<div class="modal fade" id="Register" tabindex="-1" role="dialog" aria-labelledby="registerModal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="registerModalLongTitle">Nova Luxury Registration</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p style="text-align: center;"><img src="{% static 'images/logo.png' %}" alt="logo" width="250px" height="150px"></p>
+        <form action="/register" method="POST" enctype="multipart/form-data">
+          {%csrf_token%}
+          <div class="row">
+            <div class="col-sm">
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" name="cust_name" id="name" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-sm">
+              <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" name="cust_email" id="email" class="form-control" required>
+                <small>Please Provide Correct Email ID. You will get Notifications</small>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm">
+              <div class="form-group">
+                <label for="mobile">Mobile</label>
+                <input type="text" name="cust_mobile" id="mobile" class="form-control" required>
+                <small>Enter your 10 digit mobile number</small>
+              </div>    
+            </div>
+            <div class="col-sm">
+              <div class="form-group">
+                <label for="name">Username</label>
+                <input type="text" name="username" id="name" class="form-control" required>
+              </div>    
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm">
+              <div class="form-group">
+                <label for="pwd">Password</label>
+                <input type="password" name="password" id="pwd" class="form-control" required>
+              </div>        
+            </div>
+            <div class="col-sm">
+              <div class="form-group">
+                <label for="pwd">Confirm Password</label>
+                <input type="text" name="cnfpassword" id="pwd" class="form-control" required>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <input type="submit" class="btn btn-primary" value="Register">
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+
+</body>
+<script>
+window.onscroll = function() {myFunction()};
+
+var navbar = document.getElementById("sparrow");
+var sticky = navbar.offsetTop;
+
+var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+if (isMobile)
+{
+  if (window.pageYOffset >= sticky) {
+    navbar.classList.add("navbar-fixed-top");
+  } 
+  else if(!isMobile) {
+    navbar.classList.remove("navbar-fixed-top");
+  }
+}
+
+
+function myFunction() {
+  if (window.pageYOffset >= sticky && !isMobile) {
+    navbar.classList.add("sticky")
+    document.getElementById('Img').style.width = '100px';
+    document.getElementById('Img').style.height = '50px';
+    navbar.style.height = '70px';
+    navbar.style.transitionDuration = '2s';
+    var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var scrolled = (winScroll / height) * 100;
+    document.getElementById("myBar").style.width = scrolled + "%";
+  } 
+  else if(!isMobile) {
+    navbar.classList.remove("sticky");
+    document.getElementById('Img').style.width = '250px';
+    document.getElementById('Img').style.height = '150px';
+    navbar.style.height = 'auto';
+    navbar.style.transitionDuration = '2s';
+  }
+}
+</script>
+</html>

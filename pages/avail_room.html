@@ -1,0 +1,50 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block content%}
+<style>
+  .mytext{
+    text-align: justify;
+  }
+</style>
+    <h2 class="room_heading obq">Rooms Offered</h2>    
+      <div class="container">
+        <h4 class="room_type_heading obq">Economy</h4>
+        <div class="card-deck">
+          {%for item in eco%}
+          <div class="card border-primary">
+            <img class="card-img-top" src="{{item.room_img.url}}" width="200px" height="200px" alt="Card image cap">
+            <div class="card-body">
+              <h5 class="card-title obq">{{item.room_name}}</h5>
+              <p class="card-text mytext">{{item.room_desc}}</p>
+            </div>
+            <div class="card-body">
+              <ul class="list-group border-success">
+                <li class="list-group-item">Price &emsp;: {{item.room_price}}</li>
+                <li class="list-group-item">Max. Oppupancy &nbsp;: {{item.room_occ}}</li>
+                <li class="list-group-item">No of Rooms: {{item.no_of_rooms_avail}}</li>
+              </ul>
+            </div>
+          </div>
+          {%endfor%}
+        </div>
+        <h4 class="room_type_heading obq">Premium</h4>
+        <div class="card-deck">
+          {%for item in pre%}
+          <div class="card border-primary">
+            <img class="card-img-top" src="{{item.room_img.url}}" width="200px" height="200px" alt="Card image cap">
+            <div class="card-body">
+              <h5 class="card-title obq">{{item.room_name}}</h5>
+              <p class="card-text mytext">{{item.room_desc}}</p>
+            </div>
+            <div class="card-body">
+              <ul class="list-group border-success">
+                <li class="list-group-item">Price &emsp;: {{item.room_price}}</li>
+                <li class="list-group-item">Max. Oppupancy &nbsp;: {{item.room_occ}}</li>
+                <li class="list-group-item">No of Rooms: {{item.no_of_rooms_avail}}</li>
+              </ul>
+            </div>
+          </div>
+          {%endfor%}
+        </div>
+      </div>
+{%endblock%}

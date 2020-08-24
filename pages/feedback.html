@@ -1,0 +1,44 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block content%}
+    <h4 class="room_type_heading obq">Feedback</h4>
+    <p>*All Fields are Mandatory</p>
+    <div class="form-group">
+      <form action="/dashboard/feedback" method="POST">
+        {%csrf_token%}
+        <div class="row">
+            <div class="col-sm">
+                <div class="form-group">
+                    <label for="name">Select Booking ID</label>
+                    <select name="book_id" class="form-control" id="name">
+                      {%for item in li_up%}
+                      <option value="{{item.id}}">BK{{item.id}} on {{item.date_booked}}</option>
+                      {%endfor%}
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="form-group">
+                    <label for="cleanliness">Rate our Room Cleanliness</label>
+                    <input type="range" min="1" name="rate_clean" max="10" value="5" class="slider form-control" id="cleanliness">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <div class="form-group">
+                    <label for="cid">Rate our Services Offered</label>
+                    <input type="range" min="1" max="10" name="rate_service" value="5" class="slider form-control" id="myRange">
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="form-group">
+                    <label for="cit">Suggestions / Advice</label>
+                    <input type="text" name="rate_message" class="form-control" id="cit">
+                </div>
+            </div>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Submit Feedback">
+      </form>
+    </div>
+{%endblock%}

@@ -1,0 +1,28 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block content%}
+<p style="text-align: center;">
+    <img src="{% static 'images/logo.png' %}" alt="logo" width="250px" height="150px">
+</p>
+        <form action="/dashboard/getVacancy" method="POST" enctype="multipart/form-data">
+            {%csrf_token%}
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="vac_date">Date</label>
+                    <input type="date" name="vacant_date" id="vac_date" class="form-control" required>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="vac_r">Room Type</label>
+                    <select name="room" id="vac_r" class="form-control">
+                        <option value="Select">Select</option>
+                        {%for item in obj%}
+                        <option value="{{item.room_name}}">{{item.room_name}}</option>
+                        {%endfor%}
+                    </select><br>
+                </div>    
+            </div>
+            <input type="submit" class="btn btn-outline-secondary">
+        </form>
+{%endblock%}
