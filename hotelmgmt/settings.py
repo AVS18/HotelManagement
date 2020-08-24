@@ -76,7 +76,7 @@ import dj_database_url
 from decouple import config
 
 SECRET_KEY = config('SECRET_KEY')
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = False
 DATABASES = {
     'default': dj_database_url.config(
         default=config('DATABASE_URL')
