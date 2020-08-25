@@ -10,9 +10,20 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>Document</title>
+    <title>Survey Sparrow |HMS Intern </title>
     <link rel="stylesheet" href="{% static 'dashboard.css' %}">
     <link rel="stylesheet" href="{% static 'sparrow.css' %}">
+    <style>
+      .footer {
+        font-weight: 200;
+        font-size: 1.2em;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        color: #002366;
+        text-align: center;
+      }
+    </style>
 </head>
 <body>
   
@@ -26,7 +37,7 @@
         <a href="/dashboard/availrooms" class="list-group-item list-group-item-action bg-light">Rooms Offered</a>
         <a href="/dashboard/getVacancy" class="list-group-item list-group-item-action bg-light">Check Vacancy</a>
         <a href="/dashboard/bookroom" class="list-group-item list-group-item-action bg-light">Book A Room</a>
-        <a href="/dashboard/pastBookings" class="list-group-item list-group-item-action bg-light">Past Bookings</a>
+        <a href="/dashboard/pastBookings" class="list-group-item list-group-item-action bg-light">My Bookings</a>
         <a href="/dashboard/feedback" class="list-group-item list-group-item-action bg-light">Provide Feedback</a>
         <a href="/logout" class="list-group-item list-group-item-action bg-light">Logout</a>
       </div>
@@ -62,7 +73,11 @@
       $("#wrapper").toggleClass("toggled");
     });
   </script>
-
+  <div class="footer obq">
+    <br><br>
+    Contact avsadityavardhan@gmail.com for Technical Assistance
+  </div>
+  
 </body>
 
 </html>

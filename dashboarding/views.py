@@ -15,18 +15,32 @@ def dashboard(request):
         storage.used = True
         messages.info(request,'Not Authorized to access that page')
         return redirect('/')
-
 def availrooms(request):
+    if not request.user.is_authenticated:
+        storage = messages.get_messages(request)
+        storage.used = True
+        messages.info(request,'Not Authorized to access that page')
+        return redirect('/')
     eco = Rooms.objects.filter(room_class="Economy").all()
     pre = Rooms.objects.filter(room_class="Premium").all()
     return render(request,'avail_room.html',{'eco':eco,'pre':pre})
 
 
 def bookroom(request):
+    if not request.user.is_authenticated:
+        storage = messages.get_messages(request)
+        storage.used = True
+        messages.info(request,'Not Authorized to access that page')
+        return redirect('/')    
     obj = Rooms.objects.values('room_name')
     return render(request,'book_a_room.html',{'room_select':False,'obj':obj})
 
 def acceptBooking(request):
+    if not request.user.is_authenticated:
+        storage = messages.get_messages(request)
+        storage.used = True
+        messages.info(request,'Not Authorized to access that page')
+        return redirect('/')
     if request.method=="POST":
         obj = Rooms.objects.filter(room_name=request.POST["room"]).all()[0]
         return render(request,'book_a_room.html',{'room_select':True,'obj':obj})
@@ -34,6 +48,11 @@ def acceptBooking(request):
         return redirect('/dashboard/bookroom') 
 
 def confirmBooking(request):
+    if not request.user.is_authenticated:
+        storage = messages.get_messages(request)
+        storage.used = True
+        messages.info(request,'Not Authorized to access that page')
+        return redirect('/')
     if request.method=="POST":
         user = User.objects.filter(username=request.user.username)[0]
         room = Rooms.objects.filter(room_name = request.POST["book_room_type"])[0]
@@ -48,6 +67,23 @@ def confirmBooking(request):
         payment_ref = request.POST["payment_id"]
         message = request.POST["message_desk"]
         no_of_rooms = request.POST["rooms_count"]
+        #check whether requested rooms available on the days
+        start_date = datetime.datetime.strptime(check_in_date, '%Y-%m-%d')
+        end_date = datetime.datetime.strptime(check_out_date, '%Y-%m-%d')
+        delta = datetime.timedelta(days=1)
+        flag = True #We Initially assume rooms are available to book. We prove our assumption by checking the availability table
+        while start_date<=end_date:
+            val = Availability.objects.filter(date=start_date,month=start_date.month,room_type=room)
+            if len(val)!=0:
+                if val[0].rooms_available < int(no_of_rooms):
+                    flag=False 
+                    break
+            start_date += delta
+        if not flag:
+            storage = messages.get_messages(request)
+            storage.used = True
+            messages.info(request,'{0} {1} are not available between {2} - {3} Kindly Check the Vacancy again'.format(no_of_rooms,room.room_name,check_in_date,check_out_date))
+            return redirect('/dashboard')
         obj = RoomBooking.objects.create(user=user,room=room,check_in_date=check_in_date,check_in_time=check_in_time,no_of_rooms=no_of_rooms,
                     check_out_date=check_out_date,check_out_time=check_out_time,date_booked=date_booked,is_cancelled=is_cancelled,
                     total_days=total_days,cost = cost,payment_ref=payment_ref,message = message)
@@ -65,12 +101,17 @@ def confirmBooking(request):
             start_date += delta
         storage = messages.get_messages(request)
         storage.used = True
-        messages.info(request,'You have successfully booked rooms. We mailed you the further details of booking. We are wait for your arrival.')
+        messages.info(request,'You have successfully booked rooms. We mailed you the further details of booking. We are waiting for your arrival.')
         msg = 'Dear '+request.user.first_name+',\n\n We have booked the Room with Booking Id BK'+str(obj.id)+' Successfully. Kindly visit your dashboard for more details.\n\nThank you.\nNova Luxury Hotel'
         send_mail('Room Booked Successfully',msg,from_email='adityaintern11@gmail.com',recipient_list=[request.user.email])
         return redirect('/dashboard')
     
 def getVacancy(request):
+    if not request.user.is_authenticated:
+        storage = messages.get_messages(request)
+        storage.used = True
+        messages.info(request,'Not Authorized to access that page')
+        return redirect('/')
     if request.method=="POST":
         vacant_date = request.POST["vacant_date"]
         room = request.POST["room"]
@@ -89,7 +130,12 @@ def getVacancy(request):
     return render(request,'vacancy.html',{'obj':obj})
 
 def pastBookings(request):
-    obj = RoomBooking.objects.filter(user__username=request.user.username,is_cancelled=False)
+    if not request.user.is_authenticated:
+        storage = messages.get_messages(request)
+        storage.used = True
+        messages.info(request,'Not Authorized to access that page')
+        return redirect('/')
+    obj = RoomBooking.objects.filter(user__username=request.user.username,is_cancelled=False).select_related()
     li_up, li_past = [] , []
     today_date = datetime.date.today()
     for item in obj:
@@ -97,10 +143,18 @@ def pastBookings(request):
             li_up.append(item)
         else:
             li_past.append(item)
-    obj2 = RoomBooking.objects.filter(user__username=request.user.username,is_cancelled=True)
-    return render(request,'pastBookings.html',{'li_up':li_up,'li_past':li_past,'canc':obj2})
+    obj2 = RoomBooking.objects.filter(user__username=request.user.username,is_cancelled=True).select_related()
+    len_li_up = len(li_up)
+    len_li_past = len(li_past)
+    len_obj2 = len(obj2)
+    return render(request,'pastBookings.html',{'li_up':li_up,'li_past':li_past,'canc':obj2,'len_li_up':len_li_up,'len_li_past':len_li_past,'len_obj2':len_obj2})
 
 def cancelBooking(request,id):
+    if not request.user.is_authenticated:
+        storage = messages.get_messages(request)
+        storage.used = True
+        messages.info(request,'Not Authorized to access that page')
+        return redirect('/')
     obj = RoomBooking.objects.get(id=id)
     obj.is_cancelled=True
     obj.cancelled_date=datetime.date.today()
@@ -122,6 +176,11 @@ def cancelBooking(request,id):
     return redirect('/dashboard')
 
 def feedback(request):
+    if not request.user.is_authenticated:
+        storage = messages.get_messages(request)
+        storage.used = True
+        messages.info(request,'Not Authorized to access that page')
+        return redirect('/')
     if request.method=="POST":
         room = request.POST["book_id"]
         cleanliness = request.POST["rate_clean"]
@@ -136,6 +195,11 @@ def feedback(request):
     li_up = []
     today_date = datetime.date.today()
     for item in obj:
-        if item.check_in_date<=today_date:
+        if item.check_in_date<=today_date and len(Feedback.objects.filter(room__id=item.id))==0:
             li_up.append(item)
+    if len(li_up)==0:
+        storage = messages.get_messages(request)
+        storage.used = True
+        messages.info(request,'You have already Provided Feedback for the Past Bookings. Thank you for your cooperation.')
+        return redirect('/dashboard')
     return render(request,'feedback.html',{'li_up':li_up})
